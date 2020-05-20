@@ -1,0 +1,32 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+      <h1>Mokėtojai</h1>      
+      <p>Šiame skyruje atvaizduojami visi sukurti mokėtojai.</p>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead class="thead-light">
+        <th>Mokėtojo pavadinimas</th>
+        <th>
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of ownerArray">
+            <th>{{item.Name}}</th>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input class="form-control" type="text" #ownerName />
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm"
+                  (click)="addOwner(ownerName.value); ownerName.value='';">
+                  Pridėti Mokėtoją
+                </button>
+              </td>
+        </tr>
+    </tbody>
+</table>

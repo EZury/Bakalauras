@@ -1,0 +1,5 @@
+Paleisti website, eiti į Angular projektą
+http-server-spa dist/EZExpenses/ index.html 8080
+
+Paleisti proxy per cmd, kad būtų galima pasiekti back end už localhost ribų
+iisexpress-proxy http://192.168.1.152:58721 to 81

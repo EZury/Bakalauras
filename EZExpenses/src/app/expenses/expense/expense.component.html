@@ -1,0 +1,87 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+      <h1>Išlaidų ataskaitos redagavimas ir pildymas</h1>      
+      <p>Šiame skyruje atvaizduojama ataskaitos informacija, kurią galima pildyti ir keisti apačioje.</p>
+    </div>
+</div>
+<form #form="ngForm" autocomplete="off" *ngIf="expenseService.formData" (submit)="onSubmit(form)">
+    <input type="hidden" name="ExpenseID" #ExpenseID="ngModel" [(ngModel)]="expenseService.formData.ExpenseID">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>
+                    Išlaidų grupės pavadinimas
+                </label>
+                <input name="Name" #Name="ngModel" [(ngModel)]="expenseService.formData.Name" class="form-control" [class.is-invalid]="!formValid && expenseService.formData.Name === ''">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>
+                    Mokėtojas
+                </label>
+                <select name="OwnerID" #OwnerID="ngModel" [(ngModel)]="expenseService.formData.OwnerID" class="form-control" [class.is-invalid]="!formValid && expenseService.formData.OwnerID === 0">
+                    <option value="0">-Pasirinkti-</option>
+                    <option *ngFor="let owner of ownerArray" value="{{owner.OwnerID}}">{{owner.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>
+                    Visų išlaidų suma
+                </label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">€</div>
+                    </div>
+                    <input name="TotalAmount" type="number" #TotalAmount="ngModel" [(ngModel)]="expenseService.formData.TotalAmount" class="form-control" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-dark">
+        <thead class="thead-dark">
+            <tr>
+                <th>Išlaidos pavadinimas</th>
+                <th>Kategorija</th>
+                <th>Išlaidos kiekis</th>
+                <th>
+                    <a class="btn btn-sm btn-success text-white" (click)="AddOrEditExpenseItem(null, expenseService.formData.ExpenseID)"><i class="fa fa-plus"></i>Pridėti išlaidą</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="expenseService.expenseItems.length==0" [class.text-danger]="!formValid && expenseService.expenseItems.length==0">
+                <td class="text-center text-bold" colspan="4">
+                    Nėra išlaidų
+                </td>
+            </tr>
+            <tr *ngFor="let item of expenseService.expenseItems; let i=index">
+                <td>{{item.Name}}</td>
+                <td>{{item.CategoryName}}</td>
+                <td>{{item.Amount}}</td>
+                <td>
+                    <a class="btn btn-sm btn-info text-white" (click)="AddOrEditExpenseItem(i, expenseService.formData.ExpenseID)"><i class="fa fa-pencil"></i>Keisti</a>
+                    <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteExpenseItem(item.ExpenseItemID, i)"><i class="fa fa-trash"></i>Trinti</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">
+            Išsaugoti
+        </button>
+        <a class="btn btn-dark ml-1" routerLink="/expenses"><i class="fa fa-table"></i>Grįžti atgal</a>
+    </div>
+</form>
+<div>
+    <div class="container">
+        <canvas baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [colors]="pieChartColors">
+        </canvas>
+    </div>    
+</div>

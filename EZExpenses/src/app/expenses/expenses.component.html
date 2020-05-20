@@ -1,0 +1,37 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+      <h1>Išlaidos</h1>      
+      <p>Šiame skyruje atvaizduojamos visos išlaidų ataskaitos.</p>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead class="thead-light">
+        <th>Ataskaita</th>
+        <th>Priklauso</th>
+        <th>Iš viso suma</th>
+        <th>
+            <a class="btn btn-success" routerLink="/expense"><i class="fa fa-plus-square"></i>Pridėti naują grupę</a>
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of expenseList">
+            <th (click)="openForEdit(item.ExpenseID)">{{item.Name}}</th>
+            <td (click)="openForEdit(item.ExpenseID)">{{item.Owner}}</td>
+            <td (click)="openForEdit(item.ExpenseID)">{{item.TotalAmount}}</td>
+            <td>
+                <a class="btn btn-info" (click)="openForEdit(item.ExpenseID)">Detaliau</a>
+                <a class="btn btn-danger ml-1" (click)="onExpenseDelete(item.ExpenseID)"><i class="fa fa-trash"></i>Ištrinti grupę</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <div class="container">
+        <canvas baseChart
+          [data]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [colors]="pieChartColors">
+        </canvas>
+    </div>    
+</div>

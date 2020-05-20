@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EZExpensesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ExpenseItems" Relationship="Self.FK_ExpenseItem_Category" FromRole="Category" ToRole="ExpenseItem" />
+  </EntityType>
+  <EntityType Name="Expense">
+    <Key>
+      <PropertyRef Name="ExpenseID" />
+    </Key>
+    <Property Name="ExpenseID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OwnerID" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Owner" Relationship="Self.FK_Expense_Owner" FromRole="Expense" ToRole="Owner" />
+    <NavigationProperty Name="ExpenseItems" Relationship="Self.FK_ExpenseItem_Expense" FromRole="Expense" ToRole="ExpenseItem" />
+  </EntityType>
+  <EntityType Name="ExpenseItem">
+    <Key>
+      <PropertyRef Name="ExpenseItemID" />
+    </Key>
+    <Property Name="ExpenseItemID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ExpenseID" Type="Int64" />
+    <Property Name="CategoryID" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_ExpenseItem_Category" FromRole="ExpenseItem" ToRole="Category" />
+    <NavigationProperty Name="Expense" Relationship="Self.FK_ExpenseItem_Expense" FromRole="ExpenseItem" ToRole="Expense" />
+  </EntityType>
+  <EntityType Name="Owner">
+    <Key>
+      <PropertyRef Name="OwnerID" />
+    </Key>
+    <Property Name="OwnerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Expenses" Relationship="Self.FK_Expense_Owner" FromRole="Owner" ToRole="Expense" />
+  </EntityType>
+  <Association Name="FK_ExpenseItem_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="ExpenseItem" Type="Self.ExpenseItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="ExpenseItem">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Expense_Owner">
+    <End Role="Owner" Type="Self.Owner" Multiplicity="0..1" />
+    <End Role="Expense" Type="Self.Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owner">
+        <PropertyRef Name="OwnerID" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="OwnerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ExpenseItem_Expense">
+    <End Role="Expense" Type="Self.Expense" Multiplicity="0..1" />
+    <End Role="ExpenseItem" Type="Self.ExpenseItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Expense">
+        <PropertyRef Name="ExpenseID" />
+      </Principal>
+      <Dependent Role="ExpenseItem">
+        <PropertyRef Name="ExpenseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBModel" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Expenses" EntityType="Self.Expense" />
+    <EntitySet Name="ExpenseItems" EntityType="Self.ExpenseItem" />
+    <EntitySet Name="Owners" EntityType="Self.Owner" />
+    <AssociationSet Name="FK_ExpenseItem_Category" Association="Self.FK_ExpenseItem_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="ExpenseItem" EntitySet="ExpenseItems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Expense_Owner" Association="Self.FK_Expense_Owner">
+      <End Role="Owner" EntitySet="Owners" />
+      <End Role="Expense" EntitySet="Expenses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ExpenseItem_Expense" Association="Self.FK_ExpenseItem_Expense">
+      <End Role="Expense" EntitySet="Expenses" />
+      <End Role="ExpenseItem" EntitySet="ExpenseItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
