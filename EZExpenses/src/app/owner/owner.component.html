@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>
-                <input class="form-control" type="text" #ownerName />
+                <input class="form-control" type="text" #ownerName [class.is-invalid]="!formValid"/>
               </td>
               <td>
                 <button class="btn btn-primary btn-sm"

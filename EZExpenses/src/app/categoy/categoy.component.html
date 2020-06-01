@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>
-                <input class="form-control" type="text" #categoryName />
+                <input class="form-control" type="text" #categoryName [class.is-invalid]="!formValid"/>
               </td>
               <td>
                 <button class="btn btn-primary btn-sm"

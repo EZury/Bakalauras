@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class CategoyComponent implements OnInit {
   categoryArray: Category[];
+  formValid: boolean = true;
 
   constructor(
     public categoryService: CategoryService,
@@ -21,12 +22,23 @@ export class CategoyComponent implements OnInit {
   }
 
   addCategory(Name: string) {
+    if (this.validateForm(Name)) {
+      Name = Name.trim();
+      this.categoryService.addCategory({Name} as Category).subscribe(category => {
+          this.router.navigate(['/category']);
+          this.categoryArray.push(category);
+        }
+      );
+    }
+  }
+
+  validateForm(Name: string) {
     Name = Name.trim();
-    if (!Name ) { return; }
-    this.categoryService.addCategory({Name} as Category).subscribe(category => {
-        this.router.navigate(['/category']);
-        this.categoryArray.push(category);
-      }
-    );
+    this.formValid = true;
+    if (Name === '' || this.categoryArray.find(category => category.Name === Name)) {
+      this.formValid = false;
+    }
+
+    return this.formValid;
   }
 }
